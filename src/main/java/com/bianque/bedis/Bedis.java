@@ -214,4 +214,19 @@ public class Bedis extends Jedis {
         }
         return result;
     }
+
+    public void close() {
+        if (this.dataSource != null) {
+            if (this.client.isBroken()) {
+                this.dataSource.returnBrokenResource(this);
+            } else {
+                this.dataSource.returnResource(this);
+            }
+
+            this.dataSource = null;
+        } else {
+            super.close();
+        }
+
+    }
 }
